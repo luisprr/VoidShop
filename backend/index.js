@@ -19,7 +19,7 @@ import "./database/db.js";
 import { runMigrations } from "./database/migrations.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT) || 3000;
 
 // Configurar CORS con origenes especificos
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173', 'http://localhost:5174'];
