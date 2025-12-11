@@ -82,7 +82,7 @@ app.get("/health", (req, res) => {
 // ==================================================
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.listen(PORT, () => {
-  console.log(`🚀 VoidShop backend escuchando en http://localhost:${PORT}`);
-  console.log(`📚 Swagger: http://localhost:${PORT}/api-docs`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 VoidShop backend escuchando en puerto ${PORT}`);
+  console.log(`📚 Swagger: /api-docs`);
 });
