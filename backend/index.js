@@ -1,9 +1,8 @@
 // backend/index.js
-import dotenv from "dotenv";
-
-// ⚠️ IMPORTANTE: Cargar variables de entorno PRIMERO
-// Solo cargar .env en desarrollo local, no en producción
-if (process.env.NODE_ENV !== 'production') {
+// ⚠️ IMPORTANTE: Solo cargar dotenv si no estamos en Railway
+// Railway inyecta variables directamente, no necesita .env
+if (!process.env.RAILWAY_ENVIRONMENT) {
+  const dotenv = await import("dotenv");
   dotenv.config();
 }
 
