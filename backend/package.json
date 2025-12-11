@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "node --import ./load-env.js index.js",
     "build": "echo 'Backend ready for production'"
   },
   "engines": {

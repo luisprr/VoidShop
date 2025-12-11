@@ -1,11 +1,4 @@
 // backend/index.js
-// ⚠️ IMPORTANTE: Solo cargar dotenv en desarrollo local
-// En Railway/producción, las variables se inyectan directamente
-if (!process.env.RAILWAY_ENVIRONMENT && !process.env.DATABASE_URL) {
-  const dotenv = await import("dotenv");
-  dotenv.config();
-}
-
 import express from "express";
 import cors from "cors";
 
