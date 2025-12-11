@@ -1,0 +1,4509 @@
+/* =========================
+   FUENTES / RESET BÁSICO
+   ========================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap");
+
+:root {
+  --vs-bg: #252a16;              /* fondo general */
+  --vs-bg-panel: #323920;        /* paneles */
+  --vs-bg-panel-soft: #3b4221;   /* paneles internos */
+  --vs-green-main: #6b7132;      /* verde principal (botones) */
+  --vs-green-soft: #788153;      /* verde suave (precios, detalles) */
+  --vs-green-dark: #454b1b;      /* verde muy oscuro */
+  --vs-accent-gold: #f4d48b;     /* dorado suave para detalles */
+  --vs-red-main: #ba1b1b;        /* para errores / sin stock */
+  --vs-border-soft: rgba(255, 255, 255, 0.08);
+
+  --vs-text-main: #f7f7f2;
+  --vs-text-muted: #c4ccb5;
+  --vs-text-soft: #e3ecd2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--vs-bg);
+  color: var(--vs-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  background: var(--vs-bg);
+  overflow-x: hidden;
+}
+
+/* Mejorar la experiencia táctil en móviles */
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimización de imágenes en móvil */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================
+   LAYOUT PRINCIPAL
+   ========================= */
+
+.vs-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-main-shell {
+  flex: 1;
+  padding: 18px 32px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   HEADER SUPERIOR
+   ========================= */
+
+.vs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 32px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  background: linear-gradient(to right, #2b321b, #3b4221);
+}
+
+.vs-logo {
+  font-family: "Playfair Display", serif;
+  font-size: 1.55rem;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--vs-text-main);
+  cursor: pointer;
+  transition: none;
+}
+
+.vs-logo:hover {
+  color: var(--vs-text-main);
+}
+
+.vs-header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 32px;
+}
+
+.vs-search {
+  display: flex;
+  width: 100%;
+  max-width: 520px;
+}
+
+.vs-search-input {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 999px 0 0 999px;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  background: #252a16;
+  color: var(--vs-text-main);
+  font-size: 0.9rem;
+}
+
+.vs-search-input::placeholder {
+  color: rgba(156, 163, 175, 0.9);
+}
+
+.vs-search-btn {
+  border-radius: 0 999px 999px 0;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  border-left: none;
+  background: var(--vs-green-main);
+  color: #14160a;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.vs-search-btn svg {
+  display: block;
+}
+
+.vs-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Hamburger Menu - Desktop oculto por defecto */
+.vs-hamburger {
+  display: none !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 1001;
+  position: relative;
+  overflow: hidden;
+}
+
+.vs-hamburger span {
+  width: 20px;
+  height: 2px;
+  background: var(--vs-text-main);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vs-hamburger span:nth-child(1) {
+  top: 8px;
+}
+
+.vs-hamburger span:nth-child(2) {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.vs-hamburger span:nth-child(3) {
+  bottom: 8px;
+}
+
+.vs-hamburger:hover span {
+  background: var(--vs-accent-gold);
+}
+
+/* Animación del hamburguesa cuando está activo */
+.vs-hamburger.active span:nth-child(1) {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.vs-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.vs-hamburger.active span:nth-child(3) {
+  bottom: auto;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Overlay móvil - Oculto por defecto */
+.vs-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Usuario invitado / logueado */
+
+.vs-header-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 10px;
+  border-right: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+.vs-header-user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: #252a16;
+  color: var(--vs-text-main);
+}
+
+.vs-header-user-icon svg {
+  color: var(--vs-text-main);
+}
+
+.vs-header-user-name {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vs-text-soft);
+}
+
+/* Botones de icono: favoritos / carrito */
+
+.vs-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #252a16;
+  color: var(--vs-text-main);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.vs-icon-btn svg {
+  display: block;
+}
+
+.vs-icon-btn--active {
+  background: var(--vs-green-main);
+  border-color: var(--vs-green-main);
+  color: #14160a;
+}
+
+.vs-icon-badge {
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #14160a;
+  color: var(--vs-green-soft);
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+/* Links de auth / admin */
+
+.vs-header-link {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: transparent;
+  color: var(--vs-text-main);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.vs-header-link--outline {
+  background: var(--vs-green-main);
+  border-color: var(--vs-green-main);
+  color: #14160a;
+}
+
+.vs-header-link--ghost {
+  border-style: dashed;
+}
+
+/* =========================
+   PÁGINAS / LAYOUT
+   ========================= */
+
+.vs-page {
+  margin-top: 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--vs-bg);
+}
+
+.vs-page-layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 18px;
+  align-items: flex-start;
+  flex: 1;
+}
+
+/* =========================
+   PANEL GENERAL
+   ========================= */
+
+.vs-panel {
+  border-radius: 14px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel);
+  padding: 16px 18px 18px;
+}
+
+.vs-panel--catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vs-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.vs-panel-title {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: "Playfair Display", serif;
+}
+
+.vs-panel-subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-status-text {
+  font-size: 0.9rem;
+  color: var(--vs-text-soft);
+}
+
+/* =========================
+   BOTONES GENERALES
+   ========================= */
+
+.vs-primary-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 9px 16px;
+  background: var(--vs-green-main);
+  color: #14160a;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.vs-primary-btn--disabled {
+  background: var(--vs-red-main);
+  color: #fee2e2;
+  cursor: not-allowed;
+}
+
+.vs-secondary-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #252a16;
+  color: var(--vs-text-main);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+/* =========================
+   SIDEBAR DE FILTROS
+   ========================= */
+
+.vs-filters-panel {
+  border-radius: 14px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel);
+  padding: 16px 18px 18px;
+  height: fit-content;
+  position: sticky;
+  top: 18px;
+}
+
+.vs-page-title {
+  margin: 0 0 4px;
+  font-size: 1.4rem;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.vs-page-subtitle {
+  margin: 0 0 16px;
+  font-size: 0.86rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vs-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.vs-filter-title {
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--vs-text-main);
+}
+
+.vs-filter-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vs-filter-chip-group--column {
+  flex-direction: column;
+}
+
+.vs-filter-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: #252a16;
+  color: var(--vs-text-main);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.vs-filter-chip--full {
+  width: 100%;
+  justify-content: center;
+}
+
+.vs-filter-chip--active {
+  background: var(--vs-green-main);
+  border-color: var(--vs-green-main);
+  color: #14160a;
+}
+
+.vs-filter-checkbox-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vs-filter-checkbox {
+  font-size: 0.8rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-filter-checkbox input {
+  margin-right: 5px;
+}
+
+.vs-filter-clear-btn {
+  margin-top: 6px;
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #252a16;
+  color: var(--vs-text-main);
+  padding: 8px 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* =========================
+   GRID Y CARDS DE PRODUCTOS
+   ========================= */
+
+.vs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 280px));
+  gap: 16px;
+  justify-content: start;
+}
+
+.vs-card {
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel-soft);
+  padding: 12px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vs-card--with-fav {
+  padding-top: 8px;
+}
+
+.vs-card-image-wrapper {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #14160a;
+}
+
+.vs-card-image-wrapper--square {
+  aspect-ratio: 1 / 1;
+}
+
+.vs-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vs-card-image--placeholder {
+  background: #14160a;
+}
+
+.vs-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.vs-card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.vs-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.vs-card-price {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vs-green-soft);
+}
+
+.vs-card-stock {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-card-stock-number {
+  color: var(--vs-accent-gold);
+  font-weight: 500;
+}
+
+.vs-card-actions {
+  margin-top: 8px;
+}
+
+/* Botón favoritos en la card */
+
+.vs-fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #252a16;
+  color: var(--vs-text-main);
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vs-fav-btn--active {
+  border-color: #dc2626;
+  background: rgba(220, 38, 38, 0.15);
+  color: #ef4444;
+}
+
+.vs-fav-btn--active svg {
+  fill: #ef4444;
+}
+
+/* =========================
+   PÁGINAS DE AUTENTICACIÓN
+   ========================= */
+
+.vs-auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+}
+
+.vs-auth-card {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel);
+  padding: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.vs-auth-card--admin {
+  border-color: rgba(244, 212, 139, 0.2);
+  box-shadow: 0 8px 24px rgba(244, 212, 139, 0.1);
+}
+
+.vs-auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.vs-auth-header .vs-secondary-btn--small {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.vs-auth-icon {
+  width: 80px;
+  height: 80px;
+  margin: 20px auto 16px;
+  border-radius: 50%;
+  background: var(--vs-bg-panel-soft);
+  border: 2px solid var(--vs-border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vs-green-soft);
+}
+
+.vs-auth-icon--admin {
+  border-color: rgba(244, 212, 139, 0.3);
+  background: rgba(244, 212, 139, 0.05);
+  color: var(--vs-accent-gold);
+}
+
+.vs-auth-title {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vs-text-main);
+}
+
+.vs-auth-subtitle {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--vs-text-soft);
+  line-height: 1.5;
+}
+
+.vs-auth-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(186, 27, 27, 0.15);
+  border: 1px solid rgba(186, 27, 27, 0.3);
+  color: #fecaca;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.vs-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vs-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--vs-text-main);
+  letter-spacing: 0.02em;
+}
+
+.vs-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.vs-auth-footer {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.vs-auth-link-text {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-auth-link {
+  color: var(--vs-accent-gold);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.vs-auth-link:hover {
+  color: var(--vs-green-soft);
+  text-decoration: underline;
+}
+
+.vs-auth-note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--vs-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.vs-auth-note strong {
+  color: var(--vs-accent-gold);
+}
+
+/* =========================
+   CARRITO DE COMPRAS
+   ========================= */
+
+.vs-cart-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.vs-cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vs-cart-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vs-cart-item-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel-soft);
+  align-items: center;
+}
+
+.vs-cart-item-thumb {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #14160a;
+}
+
+.vs-cart-item-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vs-cart-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.vs-cart-item-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--vs-text-main);
+}
+
+.vs-cart-item-sub {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--vs-green-soft);
+  font-weight: 500;
+}
+
+.vs-cart-item-stock {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--vs-text-muted);
+}
+
+.vs-cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.vs-cart-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel);
+  padding: 4px;
+}
+
+.vs-qty-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: var(--vs-green-main);
+  color: #14160a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.vs-qty-btn:hover {
+  background: var(--vs-green-soft);
+  transform: scale(1.05);
+}
+
+.vs-qty-btn:active {
+  transform: scale(0.95);
+}
+
+.vs-qty-value {
+  min-width: 40px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--vs-text-main);
+}
+
+.vs-cart-summary {
+  position: sticky;
+  top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--vs-border-soft);
+  background: var(--vs-bg-panel);
+  padding: 20px;
+}
+
+.vs-section-title {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vs-text-main);
+}
+
+.vs-section-title--sm {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.vs-cart-summary-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.vs-cart-summary-block:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.vs-cart-summary-block p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-cart-summary-block p strong {
+  color: var(--vs-text-main);
+  font-size: 1rem;
+}
+
+.vs-cart-summary-block p:last-child {
+  font-size: 1.1rem;
+  color: var(--vs-text-main);
+  font-weight: 500;
+}
+
+.vs-cart-summary-block p:last-child strong {
+  font-size: 1.3rem;
+  color: var(--vs-accent-gold);
+}
+
+.vs-cart-coupon-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vs-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: var(--vs-bg-panel-soft);
+  color: var(--vs-text-main);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.vs-input::placeholder {
+  color: var(--vs-text-muted);
+}
+
+.vs-input:focus {
+  outline: none;
+  border-color: var(--vs-green-main);
+}
+
+.vs-cart-summary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.vs-primary-btn--wide,
+.vs-secondary-btn--wide {
+  width: 100%;
+  justify-content: center;
+}
+
+.vs-primary-btn:disabled,
+.vs-secondary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vs-secondary-btn--small {
+  padding: 6px 12px;
+  font-size: 0.78rem;
+}
+
+.vs-status-error,
+.vs-status-ok {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.vs-status-error {
+  background: rgba(186, 27, 27, 0.15);
+  border: 1px solid rgba(186, 27, 27, 0.3);
+  color: #fecaca;
+}
+
+.vs-status-ok {
+  background: rgba(107, 113, 50, 0.15);
+  border: 1px solid rgba(107, 113, 50, 0.3);
+  color: var(--vs-accent-gold);
+}
+
+.vs-status-error--small,
+.vs-status-ok--small {
+  padding: 10px 14px;
+  font-size: 0.82rem;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+/* Tablets grandes (max 1200px) */
+@media (max-width: 1200px) {
+  .vs-page-layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .vs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  .vs-admin-two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-cart-grid {
+    grid-template-columns: 1fr 350px;
+    gap: 20px;
+  }
+}
+
+/* Tablets medianas (max 960px) */
+@media (max-width: 960px) {
+  .vs-page-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vs-main-shell {
+    padding: 16px 16px 24px;
+  }
+
+  .vs-header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    align-items: center !important;
+    padding: 12px 20px !important;
+    position: relative !important;
+  }
+
+  .vs-header-left {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Mostrar hamburger en tablets */
+  .vs-hamburger {
+    display: flex !important;
+    order: 3 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    right: 0 !important;
+  }
+
+  .vs-mobile-overlay {
+    display: block !important;
+  }
+
+  .vs-header-right {
+    position: fixed !important;
+    top: 0 !important;
+    right: -100% !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    background: var(--vs-bg-panel) !important;
+    border-left: 1px solid var(--vs-border-soft) !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 70px 20px 20px !important;
+    transition: right 0.3s ease !important;
+    z-index: 999 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .vs-header-right.vs-mobile-menu-open {
+    right: 0 !important;
+  }
+
+  .vs-header-center {
+    order: 3 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin-top: 8px !important;
+  }
+
+  /* Estilos del menú móvil */
+  .vs-header-user {
+    border-right: none;
+    padding: 12px 16px;
+    background: var(--vs-bg-panel-soft);
+    border-radius: 8px;
+    justify-content: flex-start;
+  }
+
+  .vs-header-user-name {
+    display: block !important;
+  }
+
+  .vs-header-link {
+    font-size: 0.9rem;
+    padding: 12px 16px;
+    text-align: center;
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .vs-lang-selector {
+    width: 100%;
+  }
+
+  .vs-lang-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vs-lang-menu {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: none;
+    border: 1px solid var(--vs-border-soft);
+  }
+
+  .vs-icon-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+
+  .vs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .vs-cart-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .vs-cart-item-row {
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+  }
+
+  .vs-cart-item-thumb {
+    width: 100px;
+    height: 100px;
+  }
+
+  .vs-cart-item-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .vs-cart-summary {
+    position: static;
+    width: 100%;
+  }
+
+  .vs-admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vs-profile-info-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .vs-profile-avatar {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Contenedor del buscador */
+.vs-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Input de búsqueda */
+.vs-search-input {
+  flex: 1;
+  padding: 10px 45px 10px 16px; /* Espacio a la derecha para el botón */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.vs-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.vs-search-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Botón de búsqueda (lupa) */
+.vs-search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.vs-search-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.vs-search-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================
+   ADMIN PANEL
+   ========================= */
+
+.vs-admin-page {
+  min-height: 100vh;
+  background: var(--vs-bg);
+}
+
+.vs-admin-header {
+  background: linear-gradient(135deg, var(--vs-bg-panel) 0%, var(--vs-bg-panel-soft) 100%);
+  border-bottom: 2px solid var(--vs-accent-gold);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.vs-admin-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vs-admin-logo {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vs-accent-gold);
+  border-radius: 8px;
+  color: var(--vs-bg);
+  flex-shrink: 0;
+}
+
+.vs-admin-title-group h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 0.125rem 0;
+  color: var(--vs-accent-gold);
+}
+
+.vs-admin-subtitle {
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+  margin: 0;
+}
+
+.vs-admin-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(244, 212, 139, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(244, 212, 139, 0.2);
+  color: var(--vs-text-soft);
+}
+
+.vs-admin-user-info svg {
+  color: var(--vs-accent-gold);
+}
+
+.vs-admin-user-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.vs-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.vs-admin-container {
+  padding: 2rem;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.vs-admin-section {
+  background: var(--vs-bg-panel);
+  border-radius: 10px;
+  padding: 2rem;
+  border: 1px solid var(--vs-border-soft);
+}
+
+.vs-admin-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vs-admin-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: var(--vs-text-main);
+  display: flex;
+  align-items: center;
+}
+
+.vs-admin-section-title svg {
+  color: var(--vs-accent-gold);
+}
+
+.vs-admin-section-subtitle {
+  font-size: 0.9rem;
+  color: var(--vs-text-muted);
+  margin: 0;
+}
+
+/* Layout productos: formulario + grid */
+.vs-admin-products-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .vs-admin-products-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vs-admin-form-card {
+  background: var(--vs-bg-panel-soft);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--vs-border-soft);
+  position: sticky;
+  top: 1rem;
+}
+
+.vs-admin-form-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--vs-text-soft);
+}
+
+.vs-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vs-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.vs-form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vs-text-soft);
+}
+
+.vs-form-group input,
+.vs-form-group textarea,
+.vs-form-group select {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  background: var(--vs-bg);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 6px;
+  color: var(--vs-text-main);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.vs-form-group select {
+  background: rgba(244, 212, 139, 0.15);
+  color: var(--vs-text-main);
+  cursor: pointer;
+}
+
+.vs-form-group select option {
+  background: var(--vs-bg-panel);
+  color: var(--vs-text-main);
+  padding: 0.5rem;
+}
+
+.vs-form-group input:focus,
+.vs-form-group textarea:focus,
+.vs-form-group select:focus {
+  outline: none;
+  border-color: var(--vs-accent-gold);
+  background: rgba(244, 212, 139, 0.05);
+}
+
+.vs-form-group textarea {
+  resize: vertical;
+}
+
+.vs-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.vs-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Grid de productos */
+.vs-admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.vs-admin-product-card {
+  background: var(--vs-bg-panel-soft);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.vs-admin-product-card:hover {
+  border-color: var(--vs-accent-gold);
+  transform: translateY(-2px);
+}
+
+.vs-product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--vs-bg);
+}
+
+.vs-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vs-product-info {
+  padding: 1rem;
+}
+
+.vs-product-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.vs-product-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--vs-text-main);
+  line-height: 1.3;
+  flex: 1;
+}
+
+.vs-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: rgba(107, 113, 50, 0.3);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.vs-product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--vs-border-soft);
+}
+
+.vs-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+}
+
+.vs-stock {
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+}
+
+.vs-product-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.vs-btn-icon {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: rgba(107, 113, 50, 0.2);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vs-btn-icon:hover {
+  background: var(--vs-green-main);
+  color: var(--vs-bg);
+}
+
+.vs-btn-danger {
+  background: rgba(186, 27, 27, 0.1);
+  border-color: var(--vs-red-main);
+  color: var(--vs-red-main);
+}
+
+.vs-btn-danger:hover {
+  background: var(--vs-red-main);
+  color: white;
+}
+
+/* Layout 2 columnas para órdenes y cupones */
+.vs-admin-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .vs-admin-two-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vs-admin-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--vs-text-muted);
+  font-size: 0.95rem;
+}
+
+/* Órdenes */
+.vs-admin-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vs-admin-order-card {
+  background: var(--vs-bg-panel-soft);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.vs-admin-order-card:hover {
+  border-color: var(--vs-green-soft);
+}
+
+.vs-order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--vs-border-soft);
+}
+
+.vs-order-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--vs-text-main);
+}
+
+.vs-order-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(107, 113, 50, 0.1);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-order-user svg {
+  color: var(--vs-accent-gold);
+}
+
+.vs-order-email {
+  color: var(--vs-text-muted);
+  font-size: 0.8rem;
+}
+
+.vs-order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.vs-order-total strong {
+  font-size: 1.25rem;
+  color: var(--vs-accent-gold);
+}
+
+.vs-order-coupon {
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.vs-order-coupon strong {
+  color: var(--vs-green-soft);
+}
+
+.vs-order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.vs-order-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--vs-bg);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.vs-order-item span:first-child {
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+  min-width: 25px;
+}
+
+.vs-order-item span:nth-child(2) {
+  flex: 1;
+  color: var(--vs-text-soft);
+}
+
+.vs-order-item span:last-child {
+  font-weight: 500;
+  color: var(--vs-green-soft);
+}
+
+/* Cupones */
+.vs-admin-coupons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vs-admin-coupon-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--vs-bg-panel-soft);
+  border: 2px dashed var(--vs-accent-gold);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.vs-admin-coupon-card:hover {
+  border-style: solid;
+  transform: translateY(-1px);
+}
+
+.vs-coupon-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vs-coupon-info strong {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  color: var(--vs-accent-gold);
+  letter-spacing: 0.05em;
+}
+
+.vs-coupon-discount {
+  padding: 0.25rem 0.75rem;
+  background: rgba(244, 212, 139, 0.2);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+}
+
+/* ========================================
+   MODAL DE PRODUCTO
+   ======================================== */
+.vs-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.vs-modal-content {
+  position: relative;
+  background: linear-gradient(135deg, rgba(50, 57, 32, 0.95) 0%, rgba(37, 42, 22, 0.98) 100%);
+  border: 2px solid rgba(244, 212, 139, 0.3);
+  border-radius: 16px;
+  max-width: 950px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+              0 0 0 1px rgba(244, 212, 139, 0.1) inset;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vs-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--vs-accent-gold);
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 100;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.vs-modal-close:hover {
+  background: rgba(244, 212, 139, 0.15);
+  transform: scale(1.2);
+  color: var(--vs-text-main);
+}
+
+.vs-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 3rem;
+}
+
+.vs-modal-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(37, 42, 22, 1) 0%, rgba(50, 57, 32, 1) 100%);
+  border: 2px solid rgba(244, 212, 139, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.vs-modal-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vs-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.vs-modal-image:hover img {
+  transform: scale(1.05);
+}
+
+.vs-modal-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--vs-bg) 0%, var(--vs-bg-panel) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.vs-modal-header {
+  margin-bottom: 0.5rem;
+}
+
+.vs-modal-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--vs-text-main);
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.vs-modal-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--vs-accent-gold);
+  font-family: "Playfair Display", serif;
+  text-shadow: 0 2px 12px rgba(244, 212, 139, 0.4);
+  letter-spacing: -0.02em;
+}
+
+.vs-modal-stock {
+  font-size: 0.95rem;
+  color: var(--vs-text-soft);
+  padding: 1rem 1.25rem;
+  background: rgba(107, 113, 50, 0.2);
+  border: 1px solid rgba(244, 212, 139, 0.3);
+  border-left: 4px solid var(--vs-accent-gold);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.vs-modal-stock strong {
+  color: var(--vs-accent-gold);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.vs-modal-description {
+  flex: 1;
+  min-height: 100px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(244, 212, 139, 0.1);
+}
+
+.vs-modal-description h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vs-modal-description h3::before {
+  content: '';
+  width: 4px;
+  height: 1.35rem;
+  background: var(--vs-accent-gold);
+  border-radius: 2px;
+}
+
+.vs-modal-description p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--vs-text-soft);
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.vs-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.vs-fav-btn-large {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: rgba(107, 113, 50, 0.25);
+  border: 2px solid rgba(244, 212, 139, 0.4);
+  color: var(--vs-accent-gold);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.vs-fav-btn-large:hover {
+  background: rgba(107, 113, 50, 0.4);
+  border-color: var(--vs-accent-gold);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.vs-fav-btn-large.active {
+  background: rgba(220, 38, 38, 0.2);
+  border-color: #dc2626;
+  color: #ef4444;
+}
+
+.vs-fav-btn-large.active:hover {
+  background: rgba(220, 38, 38, 0.3);
+  border-color: #ef4444;
+}
+
+.vs-fav-btn-large svg {
+  flex-shrink: 0;
+}
+
+.vs-fav-btn-large.active svg {
+  fill: #ef4444;
+}
+
+.vs-modal-actions .vs-primary-btn {
+  flex: 1;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .vs-modal-body {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .vs-modal-title {
+    font-size: 1.5rem;
+  }
+
+  .vs-modal-price {
+    font-size: 1.75rem;
+  }
+
+  .vs-modal-close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .vs-modal-actions {
+    flex-direction: column;
+  }
+
+  .vs-fav-btn-large {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ========================================
+   PÁGINA DE PERFIL
+   ======================================== */
+.vs-profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.vs-profile-section {
+  background: var(--vs-bg-panel);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.vs-profile-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.vs-profile-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--vs-text-main);
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--vs-accent-gold);
+}
+
+.vs-profile-info-card {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.vs-profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(107, 113, 50, 0.2);
+  border: 3px solid var(--vs-accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vs-accent-gold);
+  flex-shrink: 0;
+}
+
+.vs-profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vs-profile-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--vs-text-muted);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vs-profile-field p {
+  font-size: 1rem;
+  color: var(--vs-text-main);
+  margin: 0;
+}
+
+.vs-profile-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.vs-profile-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vs-btn-danger {
+  padding: 0.75rem 1.5rem;
+  background: rgba(186, 27, 27, 0.2);
+  border: 2px solid var(--vs-red-main);
+  color: var(--vs-red-main);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.vs-btn-danger:hover {
+  background: var(--vs-red-main);
+  color: white;
+}
+
+/* Órdenes */
+.vs-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vs-order-card {
+  background: rgba(50, 57, 32, 0.3);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.vs-order-card:hover {
+  border-color: var(--vs-accent-gold);
+  transform: translateX(4px);
+}
+
+.vs-order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--vs-border-soft);
+}
+
+.vs-order-card-header h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--vs-text-main);
+  margin: 0 0 0.25rem 0;
+}
+
+.vs-order-date {
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+}
+
+.vs-order-total-badge {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--vs-accent-gold);
+  font-family: "Playfair Display", serif;
+}
+
+.vs-order-coupon-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(107, 113, 50, 0.15);
+  border-left: 3px solid var(--vs-green-main);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--vs-text-soft);
+  margin-bottom: 1rem;
+}
+
+.vs-order-coupon-info strong {
+  color: var(--vs-accent-gold);
+  font-family: "Courier New", monospace;
+}
+
+.vs-order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vs-order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.vs-order-item-qty {
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+  min-width: 30px;
+}
+
+.vs-order-item-name {
+  flex: 1;
+  color: var(--vs-text-soft);
+}
+
+.vs-order-item-price {
+  font-weight: 600;
+  color: var(--vs-text-main);
+}
+
+.vs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--vs-text-muted);
+}
+
+.vs-empty-state svg {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.vs-empty-state p {
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+}
+
+/* ========================================
+   PERFIL REDISEÑADO - MODERNO
+   ======================================== */
+
+/* Hero de perfil */
+.vs-profile-hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(107, 113, 50, 0.3) 0%, rgba(50, 57, 32, 0.5) 100%);
+  border-bottom: 2px solid rgba(244, 212, 139, 0.2);
+  overflow: hidden;
+}
+
+.vs-profile-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(244, 212, 139, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(107, 113, 50, 0.15) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.vs-profile-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.vs-profile-hero-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(244, 212, 139, 0.2) 0%, rgba(107, 113, 50, 0.2) 100%);
+  border: 4px solid var(--vs-accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vs-accent-gold);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.vs-profile-hero-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.vs-profile-hero-name {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--vs-text-main);
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.vs-profile-hero-email {
+  font-size: 0.95rem;
+  color: rgba(244, 212, 139, 0.85);
+  margin: 0 0 1rem 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  opacity: 0.95;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.vs-profile-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: rgba(244, 212, 139, 0.15);
+  border: 2px solid var(--vs-accent-gold);
+  border-radius: 20px;
+  color: var(--vs-accent-gold);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.vs-profile-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(186, 27, 27, 0.2);
+  border: 2px solid var(--vs-red-main);
+  color: var(--vs-red-main);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.vs-profile-logout-btn:hover {
+  background: var(--vs-red-main);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Contenedor principal */
+.vs-profile-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--vs-bg);
+  width: 100%;
+  min-height: calc(100vh - 300px);
+}
+
+/* Tabs de navegación */
+.vs-profile-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  background: rgba(50, 57, 32, 0.3);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.vs-profile-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--vs-text-soft);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.vs-profile-tab:hover {
+  background: rgba(107, 113, 50, 0.2);
+  color: var(--vs-text-main);
+}
+
+.vs-profile-tab--active {
+  background: linear-gradient(135deg, rgba(244, 212, 139, 0.25) 0%, rgba(107, 113, 50, 0.25) 100%);
+  color: var(--vs-accent-gold);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Panel de contenido */
+.vs-profile-content {
+  min-height: 400px;
+}
+
+.vs-profile-panel {
+  background: var(--vs-bg-panel);
+  border: 1px solid var(--vs-border-soft);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vs-profile-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(244, 212, 139, 0.2);
+}
+
+.vs-profile-panel-header h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--vs-text-main);
+  margin: 0;
+}
+
+/* Grid de información */
+.vs-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.vs-profile-data-item {
+  padding: 1.25rem;
+  background: rgba(50, 57, 32, 0.3);
+  border: 1px solid rgba(244, 212, 139, 0.1);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.vs-profile-data-item:hover {
+  border-color: rgba(244, 212, 139, 0.3);
+  transform: translateY(-2px);
+}
+
+.vs-profile-data-item label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vs-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.vs-profile-data-item p {
+  font-size: 1.1rem;
+  color: var(--vs-text-main);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Formulario de edición */
+.vs-profile-form-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Métodos de pago */
+.vs-payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.vs-payment-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(50, 57, 32, 0.5) 0%, rgba(37, 42, 22, 0.7) 100%);
+  border: 2px solid rgba(244, 212, 139, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.vs-payment-card:hover {
+  border-color: var(--vs-accent-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.vs-payment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.vs-payment-logo {
+  font-family: "Courier New", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--vs-accent-gold);
+}
+
+.vs-payment-default-badge {
+  padding: 0.25rem 0.75rem;
+  background: rgba(107, 113, 50, 0.3);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.vs-payment-card-number {
+  font-family: "Courier New", monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--vs-text-main);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.vs-payment-cardholder {
+  font-size: 0.9rem;
+  color: var(--vs-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.vs-payment-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--vs-text-soft);
+}
+
+.vs-payment-remove-btn {
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--vs-red-main);
+  color: var(--vs-red-main);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vs-payment-remove-btn:hover {
+  background: var(--vs-red-main);
+  color: white;
+}
+
+/* Órdenes modernas */
+.vs-empty-orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--vs-text-muted);
+}
+
+.vs-empty-orders svg {
+  margin-bottom: 1.5rem;
+  opacity: 0.4;
+  color: var(--vs-accent-gold);
+}
+
+.vs-empty-orders h4 {
+  font-size: 1.5rem;
+  color: var(--vs-text-main);
+  margin: 0 0 0.5rem 0;
+}
+
+.vs-empty-orders p {
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+}
+
+/* Barra de ordenamiento de órdenes */
+.vs-orders-sort-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(50, 57, 32, 0.3);
+  border: 1px solid rgba(244, 212, 139, 0.2);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vs-orders-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--vs-accent-gold);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.vs-orders-count svg {
+  flex-shrink: 0;
+}
+
+.vs-orders-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.vs-orders-sort label {
+  color: var(--vs-text-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.vs-sort-select {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  background: rgba(37, 42, 22, 0.6);
+  border: 1px solid rgba(244, 212, 139, 0.3);
+  border-radius: 6px;
+  color: var(--vs-text-main);
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%23f4d48b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+.vs-sort-select:hover {
+  border-color: var(--vs-accent-gold);
+  background-color: rgba(37, 42, 22, 0.8);
+}
+
+.vs-sort-select:focus {
+  outline: none;
+  border-color: var(--vs-accent-gold);
+  box-shadow: 0 0 0 3px rgba(244, 212, 139, 0.1);
+}
+
+.vs-sort-select option {
+  background: var(--vs-bg-panel);
+  color: var(--vs-text-main);
+  padding: 0.5rem;
+}
+
+.vs-orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.vs-order-modern-card {
+  background: rgba(50, 57, 32, 0.3);
+  border: 1px solid rgba(244, 212, 139, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vs-order-modern-card:hover {
+  border-color: var(--vs-accent-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.vs-order-modern-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(244, 212, 139, 0.1);
+}
+
+.vs-order-modern-number {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--vs-text-main);
+}
+
+.vs-order-modern-date {
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+}
+
+.vs-order-coupon-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(107, 113, 50, 0.2);
+  border: 1px solid var(--vs-green-main);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--vs-accent-gold);
+  margin-bottom: 1rem;
+}
+
+.vs-order-modern-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.vs-order-modern-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.vs-order-item-qty {
+  font-weight: 700;
+  color: var(--vs-accent-gold);
+  min-width: 30px;
+}
+
+.vs-order-item-name {
+  flex: 1;
+  color: var(--vs-text-soft);
+}
+
+.vs-order-item-price {
+  font-weight: 600;
+  color: var(--vs-text-main);
+}
+
+.vs-order-more-items {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--vs-text-muted);
+  font-style: italic;
+}
+
+.vs-order-modern-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(244, 212, 139, 0.1);
+}
+
+.vs-order-status-badge {
+  padding: 0.5rem 1rem;
+  background: rgba(107, 113, 50, 0.3);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.vs-order-modern-total {
+  font-family: "Playfair Display", serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--vs-accent-gold);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .vs-profile-hero-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+  }
+
+  .vs-profile-hero-info {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .vs-profile-hero-name {
+    font-size: 2rem;
+    word-break: break-word;
+  }
+
+  .vs-profile-hero-email {
+    font-size: 0.85rem;
+    word-break: break-word;
+  }
+
+  .vs-profile-logout-btn {
+    margin: 1rem 0 0 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vs-profile-tabs {
+    flex-wrap: wrap;
+  }
+
+  .vs-profile-tab {
+    flex: 1 1 calc(50% - 0.25rem);
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .vs-profile-panel {
+    padding: 1.5rem;
+  }
+
+  .vs-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-orders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-orders-sort-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .vs-orders-sort {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .vs-sort-select {
+    width: 100%;
+  }
+
+  .vs-payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-addresses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-payment-form-professional {
+    padding: 0;
+  }
+
+  .vs-payment-card-preview {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+
+  .vs-payment-preview-number {
+    font-size: 1.3rem;
+  }
+
+  .vs-payment-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   DIRECCIONES
+   ======================================== */
+
+.vs-addresses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.vs-address-card {
+  padding: 1.5rem;
+  background: rgba(50, 57, 32, 0.3);
+  border: 1px solid rgba(244, 212, 139, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.vs-address-card:hover {
+  border-color: var(--vs-accent-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.vs-address-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(244, 212, 139, 0.1);
+}
+
+.vs-address-card-header h4 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vs-accent-gold);
+  margin: 0;
+}
+
+.vs-default-badge {
+  padding: 0.25rem 0.75rem;
+  background: rgba(107, 113, 50, 0.3);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.vs-address-card-body {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.vs-address-card-body p {
+  margin: 0.25rem 0;
+  color: var(--vs-text-main);
+  font-size: 0.95rem;
+}
+
+.vs-address-card-body .vs-text-muted {
+  color: var(--vs-text-muted);
+  font-size: 0.9rem;
+}
+
+.vs-address-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(244, 212, 139, 0.1);
+}
+
+.vs-btn-edit,
+.vs-btn-delete {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vs-btn-edit {
+  background: rgba(107, 113, 50, 0.2);
+  border: 1px solid var(--vs-green-main);
+  color: var(--vs-accent-gold);
+}
+
+.vs-btn-edit:hover {
+  background: var(--vs-green-main);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.vs-btn-delete {
+  background: transparent;
+  border: 1px solid var(--vs-red-main);
+  color: var(--vs-red-main);
+}
+
+.vs-btn-delete:hover {
+  background: var(--vs-red-main);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   FORMULARIO DE PAGOS - ESTILO PROFESIONAL
+   ======================================== */
+
+.vs-payment-form-professional {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.vs-payment-card-preview {
+  background: linear-gradient(135deg, rgba(50, 57, 32, 0.8) 0%, rgba(37, 42, 22, 0.9) 100%);
+  border: 2px solid var(--vs-accent-gold);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.vs-payment-card-preview::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(244, 212, 139, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.vs-payment-card-chip {
+  width: 50px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(244, 212, 139, 0.3) 0%, rgba(107, 113, 50, 0.3) 100%);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 2px solid rgba(244, 212, 139, 0.5);
+}
+
+.vs-payment-preview-number {
+  font-family: "Courier New", monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--vs-text-main);
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.vs-payment-preview-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.vs-payment-preview-name {
+  font-size: 0.95rem;
+  color: var(--vs-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vs-payment-preview-expiry {
+  text-align: right;
+}
+
+.vs-payment-preview-expiry-label {
+  font-size: 0.7rem;
+  color: var(--vs-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.vs-payment-preview-expiry-value {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  color: var(--vs-text-main);
+  font-weight: 600;
+}
+
+.vs-payment-input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.vs-payment-input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vs-text-main);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vs-payment-input-group input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(37, 42, 22, 0.5);
+  border: 2px solid rgba(244, 212, 139, 0.2);
+  border-radius: 8px;
+  color: var(--vs-text-main);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.vs-payment-input-group input:focus {
+  outline: none;
+  border-color: var(--vs-accent-gold);
+  background: rgba(37, 42, 22, 0.7);
+  box-shadow: 0 0 0 3px rgba(244, 212, 139, 0.1);
+}
+
+.vs-payment-input-group input::placeholder {
+  color: var(--vs-text-muted);
+  opacity: 0.6;
+}
+
+.vs-payment-input-group.card-number input {
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.1em;
+  font-size: 1.1rem;
+}
+
+.vs-payment-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.vs-payment-input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vs-accent-gold);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ========================================
+   CHECKBOXES EN FORMULARIOS
+   ======================================== */
+
+.vs-form-checkbox {
+  margin: 1.5rem 0;
+}
+
+.vs-form-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vs-form-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--vs-accent-gold);
+}
+
+.vs-form-checkbox span {
+  font-size: 0.95rem;
+  color: var(--vs-text-main);
+}
+
+/* Estados de carga y vacíos */
+.vs-loading-state {
+  padding: 3rem;
+  text-align: center;
+  color: var(--vs-text-muted);
+  font-size: 1.1rem;
+}
+
+.vs-empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--vs-text-muted);
+}
+
+.vs-empty-state p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ========================================
+   NOTIFICACIONES TOAST
+   ======================================== */
+
+.vs-toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.vs-toast {
+  min-width: 320px;
+  max-width: 420px;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(50, 57, 32, 0.98) 0%, rgba(37, 42, 22, 0.98) 100%);
+  border: 2px solid var(--vs-accent-gold);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: slideInUp 0.4s ease-out, fadeOut 0.5s ease-out 3.5s forwards;
+  backdrop-filter: blur(10px);
+  pointer-events: all;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+}
+
+.vs-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--vs-text-main);
+}
+
+.vs-toast-content svg {
+  flex-shrink: 0;
+  color: var(--vs-accent-gold);
+}
+
+.vs-toast-content span {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.vs-toast-close {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--vs-text-muted);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.vs-toast-close:hover {
+  color: var(--vs-text-main);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.vs-toast-close:active {
+  transform: scale(0.9);
+}
+
+.vs-toast--success {
+  border-color: var(--vs-accent-gold);
+}
+
+.vs-toast--error {
+  border-color: var(--vs-red-main);
+}
+
+.vs-toast--error .vs-toast-content svg {
+  color: var(--vs-red-main);
+}
+
+@media (max-width: 768px) {
+  .vs-toast-container {
+    right: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+  }
+  
+  .vs-toast {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+/* Acciones del perfil */
+.vs-profile-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.vs-profile-actions button {
+  flex: 1;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.vs-footer {
+  background: linear-gradient(to bottom, #2b321b, #1f2414);
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
+  padding: 3rem 2rem 1.5rem;
+  margin-top: auto;
+}
+
+.vs-footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vs-footer-col h3.vs-footer-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--vs-accent-gold);
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vs-footer-toggle-icon {
+  display: none;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.vs-footer-col--open .vs-footer-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.vs-footer-content-wrapper {
+  overflow: hidden;
+}
+
+.vs-footer-text {
+  color: var(--vs-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.vs-footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.vs-footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--vs-text-muted);
+  transition: all 0.3s ease;
+}
+
+.vs-footer-social-link:hover {
+  background: var(--vs-green-main);
+  border-color: var(--vs-green-main);
+  color: var(--vs-text-main);
+  transform: translateY(-2px);
+}
+
+.vs-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vs-footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.vs-footer-links a {
+  color: var(--vs-text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.vs-footer-links a:hover {
+  color: var(--vs-accent-gold);
+  padding-left: 5px;
+}
+
+.vs-footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.vs-footer-bottom p {
+  color: var(--vs-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* =========================
+   LOGO CON IMAGEN
+   ========================= */
+
+.vs-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.55rem;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--vs-text-main);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.vs-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(244, 212, 139, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.vs-logo:hover .vs-logo-img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.vs-logo-text {
+  position: relative;
+}
+
+/* =========================
+   SELECTOR DE IDIOMA
+   ========================= */
+
+.vs-lang-selector {
+  position: relative;
+}
+
+.vs-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--vs-text-main);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.vs-lang-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--vs-green-soft);
+}
+
+.vs-lang-text {
+  letter-spacing: 0.05em;
+}
+
+.vs-lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--vs-bg-panel);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.vs-lang-option {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--vs-text-muted);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.vs-lang-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--vs-text-main);
+}
+
+.vs-lang-option.active {
+  background: var(--vs-green-main);
+  color: var(--vs-text-main);
+  font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVE MEJORADO
+   ========================= */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+  .vs-header {
+    padding: 10px 20px;
+  }
+
+  .vs-main-shell {
+    padding: 16px 20px 24px;
+  }
+
+  .vs-footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  .vs-header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+    position: relative !important;
+  }
+
+  .vs-header-left {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Mostrar hamburger menu */
+  .vs-hamburger {
+    display: flex !important;
+    order: 3 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    right: 0 !important;
+  }
+
+  .vs-mobile-overlay {
+    display: block !important;
+  }
+
+  .vs-header-right {
+    position: fixed !important;
+    top: 0 !important;
+    right: -100% !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    background: var(--vs-bg-panel) !important;
+    border-left: 1px solid var(--vs-border-soft) !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 70px 20px 20px !important;
+    transition: right 0.3s ease !important;
+    z-index: 999 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .vs-header-right.vs-mobile-menu-open {
+    right: 0 !important;
+  }
+
+  .vs-header-center {
+    order: 3 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin-top: 8px !important;
+  }
+
+  .vs-logo {
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+  }
+
+  .vs-search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .vs-search-input {
+    font-size: 0.9rem;
+    padding: 8px 40px 8px 14px;
+  }
+
+  .vs-header-user-name {
+    display: none;
+  }
+
+  .vs-header-user {
+    border-right: none;
+    padding: 12px 16px;
+    background: var(--vs-bg-panel-soft);
+    border-radius: 8px;
+    justify-content: flex-start;
+  }
+
+  .vs-header-user-name {
+    display: block !important;
+  }
+
+  .vs-header-link {
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .vs-lang-selector {
+    width: 100%;
+  }
+
+  .vs-lang-btn {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .vs-lang-text {
+    display: inline !important;
+  }
+
+  .vs-lang-menu {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: none;
+    border: 1px solid var(--vs-border-soft);
+  }
+
+  .vs-icon-btn {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .vs-icon-badge {
+    min-width: 18px;
+    font-size: 0.7rem;
+  }
+
+  .vs-main-shell {
+    padding: 12px 12px 20px;
+  }
+
+  .vs-page {
+    margin-top: 12px;
+  }
+
+  .vs-page-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .vs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .vs-card {
+    padding: 10px;
+  }
+
+  .vs-card-title {
+    font-size: 0.85rem;
+  }
+
+  .vs-card-price {
+    font-size: 1rem;
+  }
+
+  .vs-card-cat {
+    font-size: 0.7rem;
+  }
+
+  .vs-btn {
+    font-size: 0.8rem;
+    padding: 8px 14px;
+  }
+
+  .vs-btn-sm {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .vs-panel {
+    padding: 14px 16px;
+  }
+
+  .vs-panel-title {
+    font-size: 1.1rem;
+  }
+
+  .vs-cart-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vs-cart-item-row {
+    grid-template-columns: 70px 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .vs-cart-item-thumb {
+    width: 70px;
+    height: 70px;
+  }
+
+  .vs-cart-item-name {
+    font-size: 0.95rem;
+  }
+
+  .vs-cart-item-sub,
+  .vs-cart-item-stock {
+    font-size: 0.8rem;
+  }
+
+  .vs-cart-summary {
+    position: static;
+    width: 100%;
+  }
+
+  .vs-modal-content {
+    width: 95%;
+    max-width: 95%;
+    margin: 10px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .vs-modal-title {
+    font-size: 1.3rem;
+  }
+
+  .vs-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vs-modal-image {
+    max-height: 250px;
+  }
+
+  .vs-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .vs-fav-btn-large {
+    width: 100%;
+  }
+
+  .vs-product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vs-admin-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .vs-admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-admin-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .vs-admin-table {
+    min-width: 600px;
+    font-size: 0.85rem;
+  }
+
+  .vs-profile-section {
+    padding: 1.25rem;
+  }
+
+  .vs-profile-section-title {
+    font-size: 1.3rem;
+  }
+
+  .vs-profile-info-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .vs-profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .vs-addresses-grid,
+  .vs-payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-orders-list {
+    gap: 12px;
+  }
+
+  .vs-order-card {
+    padding: 1rem;
+  }
+
+  .vs-footer {
+    padding: 2rem 1rem 1rem;
+  }
+
+  .vs-footer-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .vs-footer-col {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0;
+  }
+
+  .vs-footer-col h3.vs-footer-title {
+    padding: 1.2rem 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .vs-footer-toggle-icon {
+    display: block !important;
+  }
+
+  .vs-footer-content-wrapper {
+    max-height: 0;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+  }
+
+  .vs-footer-col--open .vs-footer-content-wrapper {
+    max-height: 500px;
+    padding-bottom: 1.2rem;
+  }
+
+  .vs-footer-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .vs-footer-social {
+    gap: 0.8rem;
+  }
+
+  .vs-footer-social-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .vs-footer-links li {
+    margin-bottom: 0.6rem;
+  }
+
+  .vs-footer-links a {
+    font-size: 0.85rem;
+  }
+
+  .vs-footer-bottom {
+    padding: 1.5rem 0 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile pequeño (max 480px) */
+@media (max-width: 480px) {
+  .vs-header {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+
+  .vs-header-left {
+    order: 1 !important;
+  }
+
+  .vs-hamburger {
+    order: 3 !important;
+  }
+
+  .vs-header-center {
+    order: 2 !important;
+    margin-top: 8px !important;
+  }
+
+  .vs-logo {
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+  }
+
+  .vs-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .vs-header-link {
+    font-size: 0.65rem;
+    padding: 5px 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .vs-lang-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+  }
+
+  .vs-icon-btn {
+    font-size: 0.7rem;
+    padding: 6px 8px;
+  }
+
+  .vs-icon-badge {
+    min-width: 14px;
+    font-size: 0.6rem;
+    padding: 0 3px;
+  }
+
+  .vs-search-input {
+    font-size: 0.85rem;
+    padding: 7px 36px 7px 12px;
+  }
+
+  .vs-search-btn {
+    width: 32px;
+  }
+
+  .vs-main-shell {
+    padding: 10px 10px 16px;
+  }
+
+  .vs-page {
+    margin-top: 10px;
+  }
+
+  .vs-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .vs-card {
+    padding: 10px;
+  }
+
+  .vs-card-image-wrapper {
+    margin-bottom: 8px;
+  }
+
+  .vs-card-title {
+    font-size: 0.8rem;
+  }
+
+  .vs-card-price {
+    font-size: 0.95rem;
+  }
+
+  .vs-card-cat,
+  .vs-card-stock {
+    font-size: 0.65rem;
+  }
+
+  .vs-btn,
+  .vs-primary-btn,
+  .vs-secondary-btn {
+    font-size: 0.75rem;
+    padding: 7px 12px;
+  }
+
+  .vs-btn-sm {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+  }
+
+  .vs-panel {
+    padding: 12px 14px;
+  }
+
+  .vs-panel-title,
+  .vs-page-title {
+    font-size: 1rem;
+  }
+
+  .vs-filter-section-title {
+    font-size: 0.85rem;
+  }
+
+  .vs-filter-chip {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+
+  .vs-cart-item-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .vs-cart-item-thumb {
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+    margin: 0 auto;
+  }
+
+  .vs-cart-item-main {
+    align-items: center;
+  }
+
+  .vs-cart-item-name {
+    font-size: 0.9rem;
+  }
+
+  .vs-cart-item-sub,
+  .vs-cart-item-stock {
+    font-size: 0.75rem;
+  }
+
+  .vs-cart-item-actions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .vs-cart-qty-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vs-cart-summary {
+    padding: 14px;
+  }
+
+  .vs-cart-summary-title {
+    font-size: 1.1rem;
+  }
+
+  .vs-cart-total {
+    font-size: 1.2rem;
+  }
+
+  .vs-modal-content {
+    width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    margin: 10px;
+    padding: 14px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .vs-modal-title {
+    font-size: 1.1rem;
+  }
+
+  .vs-modal-price {
+    font-size: 1.3rem;
+  }
+
+  .vs-modal-image {
+    max-height: 220px;
+  }
+
+  .vs-modal-desc {
+    font-size: 0.85rem;
+  }
+
+  .vs-modal-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .vs-qty-selector {
+    width: 100%;
+  }
+
+  .vs-auth-card {
+    padding: 24px 20px;
+    max-width: 100%;
+  }
+
+  .vs-auth-header {
+    margin-bottom: 24px;
+  }
+
+  .vs-auth-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .vs-auth-title {
+    font-size: 1.3rem;
+  }
+
+  .vs-auth-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .vs-form-group label {
+    font-size: 0.8rem;
+  }
+
+  .vs-admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-admin-stat-card {
+    padding: 1rem;
+  }
+
+  .vs-admin-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .vs-admin-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .vs-admin-table {
+    min-width: 500px;
+    font-size: 0.75rem;
+  }
+
+  .vs-admin-table th,
+  .vs-admin-table td {
+    padding: 8px 6px;
+  }
+
+  .vs-profile-section {
+    padding: 1rem;
+  }
+
+  .vs-profile-section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .vs-profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.5rem;
+  }
+
+  .vs-profile-field label {
+    font-size: 0.75rem;
+  }
+
+  .vs-profile-field p {
+    font-size: 0.9rem;
+  }
+
+  .vs-address-card,
+  .vs-payment-card {
+    padding: 1rem;
+  }
+
+  .vs-order-card {
+    padding: 0.875rem;
+  }
+
+  .vs-order-header h4 {
+    font-size: 0.9rem;
+  }
+
+  .vs-order-items-list {
+    gap: 8px;
+  }
+
+  .vs-payment-form-professional {
+    padding: 0;
+  }
+
+  .vs-payment-card-preview {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+
+  .vs-payment-preview-number {
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .vs-payment-preview-name,
+  .vs-payment-preview-expiry-value {
+    font-size: 0.85rem;
+  }
+
+  .vs-input,
+  .vs-select,
+  .vs-textarea {
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .vs-footer {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .vs-footer-content {
+    gap: 0;
+  }
+
+  .vs-footer-col h3.vs-footer-title {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+
+  .vs-footer-text {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .vs-footer-links a {
+    font-size: 0.8rem;
+  }
+
+  .vs-footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .vs-footer-social {
+    gap: 0.6rem;
+  }
+
+  .vs-footer-social-link {
+    width: 34px;
+    height: 34px;
+  }
+
+  .vs-footer-social-link svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .vs-footer-bottom {
+    padding: 1.25rem 0 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .vs-empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .vs-empty-state h3 {
+    font-size: 1.2rem;
+  }
+
+  .vs-empty-state p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Extra pequeño (max 360px) */
+@media (max-width: 360px) {
+  .vs-logo {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .vs-header-link {
+    font-size: 0.6rem;
+    padding: 4px 6px;
+  }
+
+  .vs-icon-btn {
+    padding: 5px 7px;
+    gap: 4px;
+  }
+
+  .vs-search-input {
+    font-size: 0.8rem;
+    padding: 6px 32px 6px 10px;
+  }
+
+  .vs-card-title {
+    font-size: 0.75rem;
+  }
+
+  .vs-card-price {
+    font-size: 0.9rem;
+  }
+
+  .vs-cart-item-thumb {
+    max-width: 150px;
+    height: 150px;
+  }
+
+  .vs-modal-content {
+    width: calc(100% - 16px);
+    padding: 12px;
+  }
+
+  .vs-btn,
+  .vs-primary-btn,
+  .vs-secondary-btn {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

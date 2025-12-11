@@ -1,0 +1,155 @@
+// backend/paymentRoutes.js
+import express from "express";
+import crypto from "crypto";
+import { authRequired } from "./middlewares/authMiddleware.js";
+import { query } from "./database/db.js";
+
+const router = express.Router();
+
+// Configuración de encriptación
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "12345678901234567890123456789012"; // 32 bytes
+const ALGORITHM = "aes-256-cbc";
+
+// Funciones de encriptación/desencriptación
+function encrypt(text) {
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return iv.toString("hex") + ":" + encrypted.toString("hex");
+}
+
+function decrypt(text) {
+  const parts = text.split(":");
+  const iv = Buffer.from(parts.shift(), "hex");
+  const encryptedText = Buffer.from(parts.join(":"), "hex");
+  const decipher = crypto.createDecipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
+
+/**
+ * @swagger
+ * /user/payment-methods:
+ *   get:
+ *     summary: Obtener métodos de pago del usuario
+ *     tags:
+ *       - Pagos
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de métodos de pago (datos enmascarados)
+ */
+router.get("/user/payment-methods", authRequired, async (req, res) => {
+  try {
+    const result = await query(
+      "SELECT id, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at FROM payment_methods WHERE user_id = $1 ORDER BY is_default DESC, id",
+      [req.user.id]
+    );
+
+    // No retornamos los números de tarjeta ni CVV encriptados
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener métodos de pago:", error);
+    res.status(500).json({ message: "Error al obtener métodos de pago" });
+  }
+});
+
+/**
+ * @swagger
+ * /user/payment-methods:
+ *   post:
+ *     summary: Agregar un nuevo método de pago (tarjeta)
+ *     tags:
+ *       - Pagos
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cardNumber:
+ *                 type: string
+ *               cardholderName:
+ *                 type: string
+ *               expiryMonth:
+ *                 type: integer
+ *               expiryYear:
+ *                 type: integer
+ *               cvv:
+ *                 type: string
+ *               cardType:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Método de pago agregado
+ */
+router.post("/user/payment-methods", authRequired, async (req, res) => {
+  try {
+    const { cardNumber, cardholderName, expiryMonth, expiryYear, cvv, cardType } = req.body;
+
+    if (!cardNumber || !cardholderName || !expiryMonth || !expiryYear || !cvv) {
+      return res.status(400).json({ message: "Faltan datos de la tarjeta" });
+    }
+
+    // Encriptar datos sensibles
+    const encryptedCardNumber = encrypt(cardNumber);
+    const encryptedCVV = encrypt(cvv);
+
+    const result = await query(
+      "INSERT INTO payment_methods (user_id, card_number_encrypted, cardholder_name, expiry_month, expiry_year, cvv_encrypted, card_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at",
+      [req.user.id, encryptedCardNumber, cardholderName, expiryMonth, expiryYear, encryptedCVV, cardType || "Visa"]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error al agregar método de pago:", error);
+    res.status(500).json({ message: "Error al agregar método de pago" });
+  }
+});
+
+/**
+ * @swagger
+ * /user/payment-methods/{id}:
+ *   delete:
+ *     summary: Eliminar un método de pago
+ *     tags:
+ *       - Pagos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Método de pago eliminado
+ */
+router.delete("/user/payment-methods/:id", authRequired, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const result = await query(
+      "DELETE FROM payment_methods WHERE id = $1 AND user_id = $2 RETURNING *",
+      [id, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Método de pago no encontrado" });
+    }
+
+    res.json({ message: "Método de pago eliminado" });
+  } catch (error) {
+    console.error("Error al eliminar método de pago:", error);
+    res.status(500).json({ message: "Error al eliminar método de pago" });
+  }
+});
+
+export default router;
