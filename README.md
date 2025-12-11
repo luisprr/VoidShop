@@ -2,9 +2,6 @@
 
 Aplicacion completa de e-commerce desarrollada con React 19, Express.js y PostgreSQL.
 
-> **Estructura**: Monorepo con frontend y backend en un solo repositorio.
-> **Deploy**: Railway (backend) + Vercel (frontend) o Docker en cualquier servidor.
-
 ## Descripcion
 
 VoidShop es una plataforma de comercio electronico moderna que permite a los usuarios navegar por un catalogo de productos, gestionar su carrito de compras, agregar productos a favoritos y realizar ordenes. Incluye un panel de administracion completo para la gestion de productos, ordenes y cupones de descuento.
