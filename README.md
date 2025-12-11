@@ -326,60 +326,6 @@ npm run preview # Preview del build
 npm run lint    # Ejecutar linter
 ```
 
-## Despliegue en Produccion
-
-### Backend
-
-**Opciones Recomendadas**:
-1. Render (incluye PostgreSQL gratuito)
-2. Railway
-3. Heroku
-4. DigitalOcean App Platform
-
-**Pasos**:
-1. Crear base de datos PostgreSQL en la nube
-2. Configurar variables de entorno en la plataforma
-3. Asegurar que `AUTO_MIGRATE=true` para crear tablas automaticamente
-4. Deploy del codigo
-
-Ver `backend/MIGRACIONES.md` para guias detalladas de deployment.
-
-### Frontend
-
-**Opciones Recomendadas**:
-1. Vercel (ideal para React)
-2. Netlify
-3. Cloudflare Pages
-
-**Pasos**:
-1. Build del proyecto: `npm run build`
-2. Configurar `VITE_API_URL` con la URL del backend en produccion
-3. Deploy de la carpeta `dist/`
-
-Ver `frontend/DOCUMENTACION.md` para mas detalles.
-
-## Seguridad
-
-### Antes de Produccion
-
-1. Generar JWT_SECRET seguro nuevo
-2. Generar ENCRYPTION_KEY seguro nuevo (32 caracteres)
-3. Cambiar ADMIN_PASSWORD
-4. Configurar CORS con origenes especificos
-5. Considerar instalar:
-   - `helmet` (headers de seguridad)
-   - `express-rate-limit` (proteccion contra brute force)
-   - `compression` (compresion de respuestas)
-
-Ver `AUDITORIA_PRODUCCION.md` para checklist completo.
-
-## Documentacion Adicional
-
-- `backend/README_BACKEND.md` - Documentacion detallada del backend
-- `backend/MIGRACIONES.md` - Sistema de migraciones automaticas
-- `frontend/DOCUMENTACION.md` - Documentacion completa del frontend
-- `AUDITORIA_PRODUCCION.md` - Checklist de produccion
-
 ## Troubleshooting
 
 ### Backend no inicia
@@ -406,21 +352,9 @@ Ver `AUDITORIA_PRODUCCION.md` para checklist completo.
 2. Verificar JWT_SECRET sea el mismo entre reinicios
 3. Ajustar JWT_EXPIRES_IN si necesario
 
-## Contribuir
-
-1. Fork del proyecto
-2. Crear branch para feature (`git checkout -b feature/AmazingFeature`)
-3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
-5. Abrir Pull Request
-
 ## Licencia
 
 Este proyecto es privado.
-
-## Contacto
-
-Para preguntas o soporte, contactar al equipo de desarrollo.
 
 ---
 
