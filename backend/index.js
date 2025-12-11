@@ -2,7 +2,10 @@
 import dotenv from "dotenv";
 
 // ⚠️ IMPORTANTE: Cargar variables de entorno PRIMERO
-dotenv.config();
+// Solo cargar .env en desarrollo local, no en producción
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 import express from "express";
 import cors from "cors";
