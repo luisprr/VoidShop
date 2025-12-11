@@ -21,16 +21,14 @@ WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app .
 
-# Exponer puerto
+# Exponer puerto (Railway lo asignará dinámicamente)
 EXPOSE 3000
 
 # Variable de entorno por defecto
 ENV NODE_ENV=production
-ENV PORT=3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"
+# Health check deshabilitado para Railway
+# Railway maneja health checks externamente
 
 # Comando de inicio
 CMD ["npm", "start"]
