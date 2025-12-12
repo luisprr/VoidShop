@@ -1,6 +1,6 @@
 # VoidShop
 
-Aplicacion completa de e-commerce desarrollada con React 19, Express.js y PostgreSQL.
+Aplicacion completa de e-commerce desarrollada con React, Express.js y PostgreSQL.
 
 Link de VoidShop: [https://voidshop28.netlify.app/](https://voidshop28.netlify.app/)
 
