@@ -34,34 +34,34 @@ export function AuthProvider({ children }) {
     }
   }, [token]);
 
-  // Verificar validez del token al cargar
-  useEffect(() => {
-    if (user && token) {
-      verifyToken();
-    }
-  }, []);
+  // Verificar validez del token al cargar - DESACTIVADO porque el endpoint no existe
+  // useEffect(() => {
+  //   if (user && token) {
+  //     verifyToken();
+  //   }
+  // }, []);
 
-  async function verifyToken() {
-    try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
-      const res = await fetch(`${API_URL}/auth/verify`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
+  // async function verifyToken() {
+  //   try {
+  //     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+  //     const res = await fetch(`${API_URL}/auth/verify`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Authorization": `Bearer ${token}`
+  //       }
+  //     });
 
-      if (!res.ok) {
-        // Token inválido, cerrar sesión
-        console.warn("Token inválido detectado, cerrando sesión...");
-        logout();
-      }
-    } catch (error) {
-      // Si hay error de red o el endpoint no existe, no hacer nada
-      // Esto evita cerrar sesión por problemas temporales de red
-      console.log("No se pudo verificar el token (esto es normal si el backend no tiene endpoint /auth/verify)");
-    }
-  }
+  //     if (!res.ok) {
+  //       // Token inválido, cerrar sesión
+  //       console.warn("Token inválido detectado, cerrando sesión...");
+  //       logout();
+  //     }
+  //   } catch (error) {
+  //     // Si hay error de red o el endpoint no existe, no hacer nada
+  //     // Esto evita cerrar sesión por problemas temporales de red
+  //     console.log("No se pudo verificar el token (esto es normal si el backend no tiene endpoint /auth/verify)");
+  //   }
+  // }
 
   async function register({ name, email, password }) {
     setLoading(true);
