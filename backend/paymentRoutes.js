@@ -7,26 +7,38 @@ import { query } from "./database/db.js";
 const router = express.Router();
 
 // Configuración de encriptación
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "12345678901234567890123456789012"; // 32 bytes
+const ENCRYPTION_KEY_STRING = process.env.ENCRYPTION_KEY || "12345678901234567890123456789012";
+// Asegurar que la key sea exactamente 32 bytes
+const ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
 const ALGORITHM = "aes-256-cbc";
 
 // Funciones de encriptación/desencriptación
 function encrypt(text) {
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv);
-  let encrypted = cipher.update(text);
-  encrypted = Buffer.concat([encrypted, cipher.final()]);
-  return iv.toString("hex") + ":" + encrypted.toString("hex");
+  try {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return iv.toString("hex") + ":" + encrypted.toString("hex");
+  } catch (error) {
+    console.error('Error al encriptar:', error);
+    throw new Error('Error al encriptar datos');
+  }
 }
 
 function decrypt(text) {
-  const parts = text.split(":");
-  const iv = Buffer.from(parts.shift(), "hex");
-  const encryptedText = Buffer.from(parts.join(":"), "hex");
-  const decipher = crypto.createDecipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv);
-  let decrypted = decipher.update(encryptedText);
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-  return decrypted.toString();
+  try {
+    const parts = text.split(":");
+    const iv = Buffer.from(parts.shift(), "hex");
+    const encryptedText = Buffer.from(parts.join(":"), "hex");
+    const decipher = crypto.createDecipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted.toString();
+  } catch (error) {
+    console.error('Error al desencriptar:', error);
+    return '****';
+  }
 }
 
 /**
@@ -150,7 +162,8 @@ router.post("/user/payment-methods", authRequired, async (req, res) => {
     });
   } catch (error) {
     console.error("Error al agregar método de pago:", error);
-    res.status(500).json({ message: "Error al agregar método de pago" });
+    console.error("Error details:", error.message);
+    res.status(500).json({ message: "Error al agregar método de pago", error: error.message });
   }
 });
 

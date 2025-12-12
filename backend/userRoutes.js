@@ -152,6 +152,8 @@ router.get("/user/addresses", authRequired, async (req, res) => {
  */
 router.post("/user/addresses", authRequired, async (req, res) => {
   try {
+    console.log('Datos recibidos en POST /user/addresses:', req.body);
+    
     // Aceptar tanto nombres del frontend como del backend
     const street = req.body.street || req.body.address;
     const city = req.body.city;
@@ -159,8 +161,11 @@ router.post("/user/addresses", authRequired, async (req, res) => {
     const zipCode = req.body.zipCode || req.body.postalCode;
     const country = req.body.country || "Perú";
 
+    console.log('Campos mapeados:', { street, city, state, zipCode, country });
+
     if (!street || !city || !zipCode) {
-      return res.status(400).json({ message: "Faltan campos obligatorios" });
+      console.log('Validación fallida - campos faltantes');
+      return res.status(400).json({ message: "Faltan campos obligatorios", received: { street, city, zipCode } });
     }
 
     const result = await query(
