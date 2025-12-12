@@ -1132,15 +1132,20 @@ img {
     flex: 0 0 auto !important;
   }
 
+  .vs-header-center {
+    order: 2 !important;
+    flex: 1 !important;
+    max-width: 600px !important;
+    margin: 0 12px !important;
+  }
+
   /* Mostrar hamburger en tablets */
   .vs-hamburger {
     display: flex !important;
     order: 3 !important;
-    margin-left: auto !important;
-    margin-right: 0 !important;
+    margin-left: 12px !important;
     flex-shrink: 0 !important;
     position: relative !important;
-    right: 0 !important;
   }
 
   .vs-mobile-overlay {
@@ -1169,13 +1174,6 @@ img {
 
   .vs-header-right.vs-mobile-menu-open {
     right: 0 !important;
-  }
-
-  .vs-header-center {
-    order: 3 !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin-top: 8px !important;
   }
 
   /* Estilos del menú móvil */
@@ -3700,15 +3698,19 @@ img {
     flex: 0 0 auto !important;
   }
 
+  .vs-header-center {
+    order: 2 !important;
+    flex: 1 !important;
+    margin: 0 8px !important;
+  }
+
   /* Mostrar hamburger menu */
   .vs-hamburger {
     display: flex !important;
     order: 3 !important;
-    margin-left: auto !important;
-    margin-right: 0 !important;
+    margin-left: 8px !important;
     flex-shrink: 0 !important;
     position: relative !important;
-    right: 0 !important;
   }
 
   .vs-mobile-overlay {
@@ -3737,13 +3739,6 @@ img {
 
   .vs-header-right.vs-mobile-menu-open {
     right: 0 !important;
-  }
-
-  .vs-header-center {
-    order: 3 !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin-top: 8px !important;
   }
 
   .vs-logo {
