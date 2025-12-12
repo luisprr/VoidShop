@@ -8,8 +8,23 @@ const router = express.Router();
 
 // Configuración de encriptación
 const ENCRYPTION_KEY_STRING = process.env.ENCRYPTION_KEY || "12345678901234567890123456789012";
-// Asegurar que la key sea exactamente 32 bytes
-const ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
+// Asegurar que la key sea exactamente 32 bytes - soportar hex o base64
+let ENCRYPTION_KEY;
+try {
+  // Intentar como base64 primero
+  ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING, 'base64');
+  if (ENCRYPTION_KEY.length !== 32) {
+    // Si no es 32 bytes, intentar como hex
+    ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
+  }
+  if (ENCRYPTION_KEY.length !== 32) {
+    // Si aún no es 32 bytes, usar los primeros 32 caracteres como string
+    ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 32).padEnd(32, '0'));
+  }
+} catch (e) {
+  console.error('Error al procesar ENCRYPTION_KEY, usando default');
+  ENCRYPTION_KEY = Buffer.from('12345678901234567890123456789012');
+}
 const ALGORITHM = "aes-256-cbc";
 
 // Funciones de encriptación/desencriptación

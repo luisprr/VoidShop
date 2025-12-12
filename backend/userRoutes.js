@@ -174,7 +174,9 @@ router.post("/user/addresses", authRequired, async (req, res) => {
     );
 
     const addr = result.rows[0];
-    res.status(201).json({
+    console.log('Dirección guardada en BD:', addr);
+    
+    const response = {
       id: addr.id,
       label: addr.street,
       address: addr.street,
@@ -183,7 +185,9 @@ router.post("/user/addresses", authRequired, async (req, res) => {
       postalCode: addr.zip_code,
       country: addr.country,
       isDefault: addr.is_default
-    });
+    };
+    console.log('Respuesta enviada al frontend:', response);
+    res.status(201).json(response);
   } catch (error) {
     console.error("Error al crear dirección:", error);
     res.status(500).json({ message: "Error al crear dirección" });
