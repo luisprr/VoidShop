@@ -126,11 +126,17 @@ export default function ProfilePage() {
     if (!token) return;
 
     try {
+      console.log('📍 Datos del formulario de dirección:', addressForm);
+      
       const url = editingAddress
         ? `${API_URL}/user/addresses/${editingAddress.id}`
         : `${API_URL}/user/addresses`;
       
       const method = editingAddress ? "PUT" : "POST";
+
+      console.log('📍 Enviando a:', url);
+      console.log('📍 Método:', method);
+      console.log('📍 Body JSON:', JSON.stringify(addressForm));
 
       const res = await fetch(url, {
         method,
@@ -142,10 +148,14 @@ export default function ProfilePage() {
       });
 
       const data = await res.json();
+      console.log('📍 Respuesta del servidor:', data);
+      
       if (!res.ok) {
+        console.error('❌ Error al guardar dirección:', data);
         throw new Error(data?.message || t('profile.saveAddressError', 'Error al guardar dirección'));
       }
 
+      console.log('✅ Dirección guardada exitosamente');
       await loadAddresses();
       setShowAddressForm(false);
       setEditingAddress(null);
@@ -232,28 +242,36 @@ export default function ProfilePage() {
     try {
       const [expiryMonth, expiryYear] = paymentForm.expiry.split('/').map(s => s.trim());
       
+      const paymentData = {
+        cardNumber: paymentForm.cardNumber,
+        cardholderName: paymentForm.cardholderName,
+        expiryMonth: expiryMonth,
+        expiryYear: expiryYear,
+        cvv: paymentForm.cvv,
+        cardType: 'Visa',
+        isDefault: paymentForm.isDefault
+      };
+      
+      console.log('💳 Datos del pago a enviar:', paymentData);
+      
       const res = await fetch(`${API_URL}/user/payment-methods`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          cardNumber: paymentForm.cardNumber,
-          cardholderName: paymentForm.cardholderName,
-          expiryMonth: expiryMonth,
-          expiryYear: expiryYear,
-          cvv: paymentForm.cvv,
-          cardType: 'Visa',
-          isDefault: paymentForm.isDefault
-        }),
+        body: JSON.stringify(paymentData),
       });
 
       const data = await res.json();
+      console.log('💳 Respuesta del servidor:', data);
+      
       if (!res.ok) {
-        throw new Error(data?.message || t('profile.savePaymentError', 'Error al guardar método de pago'));
+        console.error('❌ Error al guardar método de pago:', data);
+        throw new Error(data?.message || data?.error || t('profile.savePaymentError', 'Error al guardar método de pago'));
       }
 
+      console.log('✅ Método de pago guardado exitosamente');
       await loadPaymentMethods();
       setShowPaymentForm(false);
       setPaymentForm({
