@@ -8,23 +8,32 @@ const router = express.Router();
 
 // Configuración de encriptación
 const ENCRYPTION_KEY_STRING = process.env.ENCRYPTION_KEY || "12345678901234567890123456789012";
-// Asegurar que la key sea exactamente 32 bytes - soportar hex o base64
+// Asegurar que la key sea exactamente 32 bytes
 let ENCRYPTION_KEY;
 try {
-  // Intentar como base64 primero
-  ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING, 'base64');
-  if (ENCRYPTION_KEY.length !== 32) {
-    // Si no es 32 bytes, intentar como hex
-    ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
-  }
-  if (ENCRYPTION_KEY.length !== 32) {
-    // Si aún no es 32 bytes, usar los primeros 32 caracteres como string
-    ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 32).padEnd(32, '0'));
+  // Primero intentar base64
+  let decoded = Buffer.from(ENCRYPTION_KEY_STRING, 'base64');
+  if (decoded.length === 32) {
+    ENCRYPTION_KEY = decoded;
+    console.log('✅ ENCRYPTION_KEY cargada desde base64 (32 bytes)');
+  } else {
+    // Intentar hex
+    decoded = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
+    if (decoded.length === 32) {
+      ENCRYPTION_KEY = decoded;
+      console.log('✅ ENCRYPTION_KEY cargada desde hex (32 bytes)');
+    } else {
+      // Usar string directo, tomar primeros 32 chars
+      ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 32).padEnd(32, '0'));
+      console.log('⚠️  ENCRYPTION_KEY generada desde string (32 bytes)');
+    }
   }
 } catch (e) {
-  console.error('Error al procesar ENCRYPTION_KEY, usando default');
+  console.error('❌ Error al procesar ENCRYPTION_KEY:', e.message);
   ENCRYPTION_KEY = Buffer.from('12345678901234567890123456789012');
+  console.log('⚠️  Usando ENCRYPTION_KEY por defecto (INSEGURO)');
 }
+console.log('🔐 ENCRYPTION_KEY length:', ENCRYPTION_KEY.length, 'bytes');
 const ALGORITHM = "aes-256-cbc";
 
 // Funciones de encriptación/desencriptación
