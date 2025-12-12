@@ -15,25 +15,25 @@ try {
   let decoded = Buffer.from(ENCRYPTION_KEY_STRING, 'base64');
   if (decoded.length === 32) {
     ENCRYPTION_KEY = decoded;
-    console.log('✅ ENCRYPTION_KEY cargada desde base64 (32 bytes)');
+    console.log('ENCRYPTION_KEY loaded from base64 (32 bytes)');
   } else {
     // Intentar hex
     decoded = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 64), 'hex');
     if (decoded.length === 32) {
       ENCRYPTION_KEY = decoded;
-      console.log('✅ ENCRYPTION_KEY cargada desde hex (32 bytes)');
+      console.log('ENCRYPTION_KEY loaded from hex (32 bytes)');
     } else {
       // Usar string directo, tomar primeros 32 chars
       ENCRYPTION_KEY = Buffer.from(ENCRYPTION_KEY_STRING.slice(0, 32).padEnd(32, '0'));
-      console.log('⚠️  ENCRYPTION_KEY generada desde string (32 bytes)');
+      console.log('ENCRYPTION_KEY generated from string (32 bytes)');
     }
   }
 } catch (e) {
-  console.error('❌ Error al procesar ENCRYPTION_KEY:', e.message);
+  console.error('Error processing ENCRYPTION_KEY:', e.message);
   ENCRYPTION_KEY = Buffer.from('12345678901234567890123456789012');
-  console.log('⚠️  Usando ENCRYPTION_KEY por defecto (INSEGURO)');
+  console.log('Using default ENCRYPTION_KEY (INSECURE)');
 }
-console.log('🔐 ENCRYPTION_KEY length:', ENCRYPTION_KEY.length, 'bytes');
+console.log('ENCRYPTION_KEY length:', ENCRYPTION_KEY.length, 'bytes');
 const ALGORITHM = "aes-256-cbc";
 
 // Funciones de encriptación/desencriptación

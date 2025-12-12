@@ -152,8 +152,6 @@ router.get("/user/addresses", authRequired, async (req, res) => {
  */
 router.post("/user/addresses", authRequired, async (req, res) => {
   try {
-    console.log('Datos recibidos en POST /user/addresses:', req.body);
-    
     // Aceptar tanto nombres del frontend como del backend
     const street = req.body.street || req.body.address;
     const city = req.body.city;
@@ -161,11 +159,8 @@ router.post("/user/addresses", authRequired, async (req, res) => {
     const zipCode = req.body.zipCode || req.body.postalCode;
     const country = req.body.country || "Perú";
 
-    console.log('Campos mapeados:', { street, city, state, zipCode, country });
-
     if (!street || !city || !zipCode) {
-      console.log('Validación fallida - campos faltantes');
-      return res.status(400).json({ message: "Faltan campos obligatorios", received: { street, city, zipCode } });
+      return res.status(400).json({ message: "Faltan campos obligatorios" });
     }
 
     const result = await query(
@@ -174,9 +169,7 @@ router.post("/user/addresses", authRequired, async (req, res) => {
     );
 
     const addr = result.rows[0];
-    console.log('Dirección guardada en BD:', addr);
-    
-    const response = {
+    res.status(201).json({
       id: addr.id,
       label: addr.street,
       address: addr.street,
@@ -185,9 +178,7 @@ router.post("/user/addresses", authRequired, async (req, res) => {
       postalCode: addr.zip_code,
       country: addr.country,
       isDefault: addr.is_default
-    };
-    console.log('Respuesta enviada al frontend:', response);
-    res.status(201).json(response);
+    });
   } catch (error) {
     console.error("Error al crear dirección:", error);
     res.status(500).json({ message: "Error al crear dirección" });
