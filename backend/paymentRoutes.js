@@ -93,17 +93,26 @@ router.post("/user/payment-methods", authRequired, async (req, res) => {
   try {
     const { cardNumber, cardholderName, expiryMonth, expiryYear, cvv, cardType } = req.body;
 
-    if (!cardNumber || !cardholderName || !expiryMonth || !expiryYear || !cvv) {
+    // Validar que los campos numéricos sean válidos
+    const month = parseInt(expiryMonth);
+    const year = parseInt(expiryYear);
+
+    if (!cardNumber || !cardholderName || !month || !year || !cvv) {
       return res.status(400).json({ message: "Faltan datos de la tarjeta" });
     }
 
+    if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+      return res.status(400).json({ message: "Fecha de expiración inválida" });
+    }
+
     // Encriptar datos sensibles
-    const encryptedCardNumber = encrypt(cardNumber);
+    const cleanCardNumber = cardNumber.replace(/\s/g, ''); // Remover espacios
+    const encryptedCardNumber = encrypt(cleanCardNumber);
     const encryptedCVV = encrypt(cvv);
 
     const result = await query(
       "INSERT INTO payment_methods (user_id, card_number_encrypted, cardholder_name, expiry_month, expiry_year, cvv_encrypted, card_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at",
-      [req.user.id, encryptedCardNumber, cardholderName, expiryMonth, expiryYear, encryptedCVV, cardType || "Visa"]
+      [req.user.id, encryptedCardNumber, cardholderName, month, year, encryptedCVV, cardType || "Visa"]
     );
 
     res.status(201).json(result.rows[0]);

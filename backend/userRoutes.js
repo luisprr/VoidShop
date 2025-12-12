@@ -140,15 +140,20 @@ router.get("/user/addresses", authRequired, async (req, res) => {
  */
 router.post("/user/addresses", authRequired, async (req, res) => {
   try {
-    const { street, city, state, zipCode, country } = req.body;
+    // Aceptar tanto nombres del frontend como del backend
+    const street = req.body.street || req.body.address;
+    const city = req.body.city;
+    const state = req.body.state || req.body.address2 || '';
+    const zipCode = req.body.zipCode || req.body.postalCode;
+    const country = req.body.country || "Perú";
 
-    if (!street || !city || !state || !zipCode) {
+    if (!street || !city || !zipCode) {
       return res.status(400).json({ message: "Faltan campos obligatorios" });
     }
 
     const result = await query(
       "INSERT INTO addresses (user_id, street, city, state, zip_code, country) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [req.user.id, street, city, state, zipCode, country || "México"]
+      [req.user.id, street, city, state, zipCode, country]
     );
 
     res.status(201).json(result.rows[0]);
@@ -186,7 +191,12 @@ router.post("/user/addresses", authRequired, async (req, res) => {
 router.put("/user/addresses/:id", authRequired, async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const { street, city, state, zipCode, country } = req.body;
+    // Aceptar tanto nombres del frontend como del backend
+    const street = req.body.street || req.body.address;
+    const city = req.body.city;
+    const state = req.body.state || req.body.address2;
+    const zipCode = req.body.zipCode || req.body.postalCode;
+    const country = req.body.country;
 
     const result = await query(
       "UPDATE addresses SET street = COALESCE($1, street), city = COALESCE($2, city), state = COALESCE($3, state), zip_code = COALESCE($4, zip_code), country = COALESCE($5, country) WHERE id = $6 AND user_id = $7 RETURNING *",

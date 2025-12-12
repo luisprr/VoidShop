@@ -11,8 +11,12 @@ const swaggerDefinition = {
   },
   servers: [
     {
+      url: "https://voidshop-backend.onrender.com/api",
+      description: "Servidor de producción",
+    },
+    {
       url: "http://localhost:3000/api",
-      description: "Servidor local de desarrollo",
+      description: "Servidor de desarrollo",
     },
   ],
   components: {
