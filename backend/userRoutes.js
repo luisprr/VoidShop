@@ -101,7 +101,19 @@ router.put("/user/profile", authRequired, async (req, res) => {
 router.get("/user/addresses", authRequired, async (req, res) => {
   try {
     const result = await query("SELECT * FROM addresses WHERE user_id = $1 ORDER BY is_default DESC, id", [req.user.id]);
-    res.json(result.rows);
+    // Mapear campos de la base de datos a los nombres del frontend
+    const mappedAddresses = result.rows.map(addr => ({
+      id: addr.id,
+      label: addr.street, // Usar street como label
+      address: addr.street,
+      address2: addr.state,
+      city: addr.city,
+      postalCode: addr.zip_code,
+      country: addr.country,
+      isDefault: addr.is_default,
+      created_at: addr.created_at
+    }));
+    res.json(mappedAddresses);
   } catch (error) {
     console.error("Error al obtener direcciones:", error);
     res.status(500).json({ message: "Error al obtener direcciones" });
@@ -156,7 +168,17 @@ router.post("/user/addresses", authRequired, async (req, res) => {
       [req.user.id, street, city, state, zipCode, country]
     );
 
-    res.status(201).json(result.rows[0]);
+    const addr = result.rows[0];
+    res.status(201).json({
+      id: addr.id,
+      label: addr.street,
+      address: addr.street,
+      address2: addr.state,
+      city: addr.city,
+      postalCode: addr.zip_code,
+      country: addr.country,
+      isDefault: addr.is_default
+    });
   } catch (error) {
     console.error("Error al crear dirección:", error);
     res.status(500).json({ message: "Error al crear dirección" });
@@ -207,7 +229,17 @@ router.put("/user/addresses/:id", authRequired, async (req, res) => {
       return res.status(404).json({ message: "Dirección no encontrada" });
     }
 
-    res.json(result.rows[0]);
+    const addr = result.rows[0];
+    res.json({
+      id: addr.id,
+      label: addr.street,
+      address: addr.street,
+      address2: addr.state,
+      city: addr.city,
+      postalCode: addr.zip_code,
+      country: addr.country,
+      isDefault: addr.is_default
+    });
   } catch (error) {
     console.error("Error al actualizar dirección:", error);
     res.status(500).json({ message: "Error al actualizar dirección" });

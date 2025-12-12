@@ -45,12 +45,33 @@ function decrypt(text) {
 router.get("/user/payment-methods", authRequired, async (req, res) => {
   try {
     const result = await query(
-      "SELECT id, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at FROM payment_methods WHERE user_id = $1 ORDER BY is_default DESC, id",
+      "SELECT id, card_number_encrypted, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at FROM payment_methods WHERE user_id = $1 ORDER BY is_default DESC, id",
       [req.user.id]
     );
 
-    // No retornamos los números de tarjeta ni CVV encriptados
-    res.json(result.rows);
+    // Retornar solo los últimos 4 dígitos de la tarjeta
+    const mappedPayments = result.rows.map(pm => {
+      let lastFour = '****';
+      try {
+        const decrypted = decrypt(pm.card_number_encrypted);
+        lastFour = decrypted.slice(-4);
+      } catch (e) {
+        console.error('Error al desencriptar tarjeta:', e);
+      }
+      return {
+        id: pm.id,
+        cardholderName: pm.cardholder_name,
+        last4: lastFour,
+        expiry: `${String(pm.expiry_month).padStart(2, '0')}/${pm.expiry_year}`,
+        expiryMonth: pm.expiry_month,
+        expiryYear: pm.expiry_year,
+        type: pm.card_type,
+        cardType: pm.card_type,
+        isDefault: pm.is_default,
+        created_at: pm.created_at
+      };
+    });
+    res.json(mappedPayments);
   } catch (error) {
     console.error("Error al obtener métodos de pago:", error);
     res.status(500).json({ message: "Error al obtener métodos de pago" });
@@ -111,11 +132,22 @@ router.post("/user/payment-methods", authRequired, async (req, res) => {
     const encryptedCVV = encrypt(cvv);
 
     const result = await query(
-      "INSERT INTO payment_methods (user_id, card_number_encrypted, cardholder_name, expiry_month, expiry_year, cvv_encrypted, card_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, cardholder_name, expiry_month, expiry_year, card_type, is_default, created_at",
+      "INSERT INTO payment_methods (user_id, card_number_encrypted, cardholder_name, expiry_month, expiry_year, cvv_encrypted, card_type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [req.user.id, encryptedCardNumber, cardholderName, month, year, encryptedCVV, cardType || "Visa"]
     );
 
-    res.status(201).json(result.rows[0]);
+    const pm = result.rows[0];
+    res.status(201).json({
+      id: pm.id,
+      cardholderName: pm.cardholder_name,
+      last4: cleanCardNumber.slice(-4),
+      expiry: `${String(month).padStart(2, '0')}/${year}`,
+      expiryMonth: pm.expiry_month,
+      expiryYear: pm.expiry_year,
+      type: pm.card_type,
+      cardType: pm.card_type,
+      isDefault: pm.is_default
+    });
   } catch (error) {
     console.error("Error al agregar método de pago:", error);
     res.status(500).json({ message: "Error al agregar método de pago" });
