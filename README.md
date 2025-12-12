@@ -6,6 +6,8 @@ Link de VoidShop: [https://voidshop28.netlify.app/](https://voidshop28.netlify.a
 
 Link de documentación swagger: [https://voidshop-backend.onrender.com/api-docs/](https://voidshop-backend.onrender.com/api-docs/)
 
+Base de datos PostgreSQL desplegada en render, backend desplegado en render con la ayuda de la funcionalidad blueprint.
+
 ## Descripcion
 
 VoidShop es una plataforma de comercio electronico moderna que permite a los usuarios navegar por un catalogo de productos, gestionar su carrito de compras, agregar productos a favoritos y realizar ordenes. Incluye un panel de administracion completo para la gestion de productos, ordenes y cupones de descuento.
@@ -47,7 +49,8 @@ voidshop/
 - Manejo robusto de errores
 
 ---
+**Autor:** Luis Rodríguez
 
 **Version**: 1.0.0
+
 **Fecha**: Diciembre 2025
-**Autor:** Luis Rodríguez
