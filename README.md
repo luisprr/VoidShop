@@ -14,9 +14,7 @@ VoidShop es una plataforma de comercio electronico moderna que permite a los usu
 ```
 voidshop/
 ├── backend/          # API REST con Express + PostgreSQL
-├── frontend/         # SPA con React 19 + Vite
-├── docker-compose.yml # Desarrollo local con Docker
-└── .env.example      # Variables de entorno
+└── frontend/         # SPA con React 19 + Vite
 ```
 
 ## Caracteristicas Principales
